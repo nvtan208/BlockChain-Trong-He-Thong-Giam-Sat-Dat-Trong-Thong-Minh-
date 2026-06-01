@@ -1,0 +1,201 @@
+{
+  "contract_address": "0x874F02451b189f9c72959628330A3Eae699a4494",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "dataHash",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "aiDecision",
+          "type": "string"
+        }
+      ],
+      "name": "DataRecorded",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getRecord",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "dataHash",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "soilAvg",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pumpCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "aiDecision",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getRecordCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_dataHash",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_soilAvg",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_pumpCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_aiDecision",
+          "type": "string"
+        }
+      ],
+      "name": "recordData",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "records",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "dataHash",
+          "type": "string"
+        },
+        {
+          "internalType": "uint256",
+          "name": "soilAvg",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pumpCount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "aiDecision",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        },
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        }
+      ],
+      "name": "verifyHash",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "account": "0xF36F07161CBe665A68E50544f0aee54E2786459A",
+  "private_key": "0x12603e3f0ee1421dd683c89b77788714dbdbbd9ffd89e75c4b951909aa64d8ab",
+  "ganache_url": "http://127.0.0.1:7545",
+  "tx_hash": "d58347d1a68ae929366f7c7a67b678bdfab21aab42355efa22ce6e9296b13309"
+}

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SmartGarden Blockchain — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #08080f;
+  --surface: #0f0f1a;
+  --card:    #13131f;
+  --border:  #1e1e35;
+  --purple:  #a78bfa;
+  --blue:    #60a5fa;
+  --green:   #4ade80;
+  --red:     #f87171;
+  --yellow:  #fbbf24;
+  --text:    #e2e2f0;
+  --muted:   #4a4a6a;
+  --mono:    'Space Mono', monospace;
+  --sans:    'Syne', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: var(--sans); min-height: 100vh;
+  padding: 0 0 40px;
+}
+body::before {
+  content:''; position:fixed; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 40% at 10% 10%, #0d0b1f 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 90% 90%, #080b1a 0%, transparent 70%);
+}
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; position:relative; }
+
+/* Header */
+header { border-bottom:1px solid var(--border); padding:20px 0 18px; margin-bottom:28px; }
+.header-inner { display:flex; align-items:center; justify-content:space-between; }
+.logo { font-size:1.4rem; font-weight:800; letter-spacing:-0.5px; }
+.logo em { color: var(--purple); font-style:normal; }
+.badge {
+  display:flex; align-items:center; gap:7px;
+  font-family:var(--mono); font-size:0.7rem; color:var(--muted);
+}
+.badge-dot { width:7px; height:7px; border-radius:50%; background:var(--muted); }
+.badge.ok .badge-dot { background:var(--green); box-shadow:0 0 8px var(--green); animation:blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* Stats Row */
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+.stat-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:20px; text-align:center;
+}
+.stat-val { font-family:var(--mono); font-size:2rem; font-weight:700; color:var(--purple); }
+.stat-label { font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:8px; }
+
+/* Action Card */
+.action-card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:14px; padding:22px 24px; margin-bottom:20px;
+}
+.action-title { font-weight:700; margin-bottom:16px; }
+.btn-row { display:flex; gap:10px; flex-wrap:wrap; }
+.btn {
+  padding:12px 20px; border:none; border-radius:10px;
+  font-family:var(--sans); font-weight:700; font-size:0.85rem;
+  cursor:pointer; transition:all 0.2s;
+}
+.btn-record { background:var(--purple); color:#000; }
+.btn-record:hover { background:#c4b5fd; }
+.btn-verify  { background:transparent; color:var(--green); border:1px solid var(--green); }
+.btn-verify:hover  { background:#0d2010; }
+.btn-refresh { background:var(--border); color:var(--muted); }
+.btn-refresh:hover { color:var(--text); }
+
+/* Result box */
+.result-box {
+  margin-top:16px; padding:14px 16px;
+  background:var(--surface); border-radius:10px;
+  font-family:var(--mono); font-size:0.78rem;
+  border-left:3px solid var(--purple);
+  display:none; white-space:pre-wrap; word-break:break-all;
+}
+.result-box.show { display:block; }
+.result-box.ok   { border-color:var(--green); }
+.result-box.err  { border-color:var(--red); }
+
+/* Table */
+.table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.table-header { padding:16px 24px; border-bottom:1px solid var(--border); font-weight:700; }
+.tbl-wrap { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; }
+th {
+  font-family:var(--mono); font-size:0.62rem; letter-spacing:2px;
+  text-transform:uppercase; color:var(--muted);
+  padding:10px 16px; text-align:left; background:var(--surface); font-weight:400;
+}
+td { padding:10px 16px; font-family:var(--mono); font-size:0.78rem; border-top:1px solid var(--border); }
+tr:hover td { background:var(--surface); }
+.hash { color:var(--purple); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ai-water { color:var(--blue); }
+.ai-ok    { color:var(--green); }
+.verify-btn {
+  padding:4px 10px; border:none; border-radius:6px;
+  font-size:0.7rem; font-weight:700; cursor:pointer;
+  background:var(--border); color:var(--muted);
+  font-family:var(--sans); transition:all 0.2s;
+}
+.verify-btn:hover { background:var(--purple); color:#000; }
+.verified-ok  { color:var(--green); font-weight:700; }
+.verified-fail { color:var(--red); font-weight:700; }
+
+.footer { text-align:center; margin-top:16px; font-family:var(--mono); font-size:0.68rem; color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="header-inner">
+      <div class="logo">Smart<em>Garden</em> <span style="font-size:.8rem;color:var(--muted);font-weight:400">Blockchain</span></div>
+      <div class="badge" id="statusBadge">
+        <div class="badge-dot"></div>
+        <span id="statusText">Đang kiểm tra...</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-val" id="statCount">—</div>
+      <div class="stat-label">Bản ghi trên Blockchain</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:var(--green)" id="statVerified">—</div>
+      <div class="stat-label">Đã xác minh OK</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val" style="color:var(--yellow)" id="statNetwork">Ganache</div>
+      <div class="stat-label">Mạng Blockchain</div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="action-card">
+    <div class="action-title">⚡ Thao tác</div>
+    <div class="btn-row">
+      <button class="btn btn-record" onclick="recordNow()">🔗 Ghi Blockchain ngay</button>
+      <button class="btn btn-verify"  onclick="verifyAll()">🔍 Xác minh tất cả</button>
+      <button class="btn btn-refresh" onclick="loadRecords()">↻ Làm mới</button>
+    </div>
+    <div class="result-box" id="resultBox"></div>
+  </div>
+
+  <!-- Records Table -->
+  <div class="table-card">
+    <div class="table-header">📋 Lịch sử bản ghi Blockchain</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Thời gian</th>
+            <th>Hash (SHA256)</th>
+            <th>Đất TB%</th>
+            <th>Số lần bơm</th>
+            <th>AI</th>
+            <th>Xác minh</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody">
+          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">Đang tải...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">Smart Garden Blockchain — Ganache Local Testnet — Port 5001</div>
+</div>
+
+<script>
+async function checkStatus() {
+  try {
+    const r = await fetch('/api/status');
+    const d = await r.json();
+    const badge = document.getElementById('statusBadge');
+    const text  = document.getElementById('statusText');
+    if (d.connected) {
+      badge.className = 'badge ok';
+      text.textContent = 'GANACHE CONNECTED';
+    } else {
+      text.textContent = 'DISCONNECTED';
+    }
+    document.getElementById('statCount').textContent = d.record_count || 0;
+  } catch(e) {
+    document.getElementById('statusText').textContent = 'ERROR';
+  }
+}
+
+async function loadRecords() {
+  try {
+    const r = await fetch('/api/records');
+    const d = await r.json();
+    const body = document.getElementById('recordsBody');
+    if (!d.records || d.records.length === 0) {
+      body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">Chưa có bản ghi nào</td></tr>';
+      return;
+    }
+    body.innerHTML = d.records.reverse().map(r => `
+      <tr id="row-${r.index}">
+        <td style="color:var(--muted)">${r.index}</td>
+        <td>${r.timestamp}</td>
+        <td class="hash" title="${r.data_hash}">${r.data_hash.substring(0,20)}...</td>
+        <td>${r.soil_avg}%</td>
+        <td>${r.pump_count}</td>
+        <td class="${r.ai_decision === 'CAN_TUOI' ? 'ai-water' : 'ai-ok'}">
+          ${r.ai_decision === 'CAN_TUOI' ? '💧 Cần tưới' : '✅ Đủ ẩm'}
+        </td>
+        <td><button class="verify-btn" onclick="verifySingle(${r.index})">Xác minh</button></td>
+      </tr>
+    `).join('');
+    document.getElementById('statCount').textContent = d.count;
+  } catch(e) {
+    console.error(e);
+  }
+}
+
+async function recordNow() {
+  showResult('⏳ Đang ghi lên Blockchain...', 'loading');
+  try {
+    const r = await fetch('/api/record_now', { method: 'POST' });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      showResult(
+        `✅ Ghi thành công!\n` +
+        `TX Hash  : ${d.tx_hash}\n` +
+        `Data Hash: ${d.data_hash}\n` +
+        `Đất TB   : ${d.soil_avg}%\n` +
+        `Số bơm   : ${d.pump_count}\n` +
+        `AI       : ${d.ai_decision}\n` +
+        `Readings : ${d.readings} mẫu`, 'ok'
+      );
+      loadRecords();
+      checkStatus();
+    } else {
+      showResult(`❌ Lỗi: ${d.msg}`, 'err');
+    }
+  } catch(e) {
+    showResult(`❌ ${e.message}`, 'err');
+  }
+}
+
+async function verifySingle(index) {
+  try {
+    const r = await fetch(`/api/verify/${index}`);
+    const d = await r.json();
+    const btn = document.querySelector(`#row-${index} .verify-btn`);
+    if (d.verified) {
+      btn.textContent = '✅ OK';
+      btn.className = 'verify-btn verified-ok';
+    } else {
+      btn.textContent = '❌ Sai';
+      btn.className = 'verify-btn verified-fail';
+    }
+    showResult(
+      `Xác minh bản ghi #${index}\n` +
+      `Thời gian      : ${d.timestamp}\n` +
+      `Blockchain hash: ${d.blockchain_hash}\n` +
+      `Local hash     : ${d.local_hash}\n` +
+      `Kết quả        : ${d.status}`,
+      d.verified ? 'ok' : 'err'
+    );
+  } catch(e) {
+    showResult(`❌ ${e.message}`, 'err');
+  }
+}
+
+async function verifyAll() {
+  showResult('⏳ Đang xác minh tất cả...', 'loading');
+  try {
+    const r = await fetch('/api/verify_all');
+    const d = await r.json();
+    document.getElementById('statVerified').textContent = `${d.ok}/${d.total}`;
+    showResult(
+      `Xác minh toàn bộ ${d.total} bản ghi\n` +
+      `✅ Nguyên vẹn : ${d.ok}\n` +
+      `❌ Đã sửa    : ${d.failed}`,
+      d.failed === 0 ? 'ok' : 'err'
+    );
+    loadRecords();
+  } catch(e) {
+    showResult(`❌ ${e.message}`, 'err');
+  }
+}
+
+function showResult(msg, type) {
+  const box = document.getElementById('resultBox');
+  box.textContent = msg;
+  box.className = 'result-box show ' + (type || '');
+}
+
+// Init
+checkStatus();
+loadRecords();
+setInterval(checkStatus, 5000);
+</script>
+</body>
+</html>
