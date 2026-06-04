@@ -22,7 +22,6 @@ Tích hợp IoT data từ `garden.db` lên Ethereum Blockchain (Ganache) để �
 ✅ **Blockchain Recording** — Ghi hash dữ liệu lên Smart Contract  
 ✅ **Data Verification** — Xác minh dữ liệu có bị sửa không  
 ✅ **Web Dashboard** — Hiển thị lịch sử và thống kê  
-✅ **Auto Scheduler** — Tự động ghi mỗi 1 giờ  
 ✅ **Real-time Status** — Kiểm tra kết nối Ganache  
 
 ---
@@ -157,16 +156,6 @@ verifyHash(uint256 index, string _hash) returns (bool)
 - `readings` — Cảm biến (soil, temp, humidity, pump, ai_result)
 - `pump_log` — Lịch sử bơm nước (action, source)
 
-**Query tự động:**
-```sql
--- Lấy dữ liệu 1 giờ gần nhất
-SELECT * FROM readings 
-WHERE ts >= datetime('now', '-1 hour')
-
-SELECT * FROM pump_log 
-WHERE ts >= datetime('now', '-1 hour')
-```
-
 ---
 
 ## ⚙️ Cấu Hình
@@ -203,7 +192,7 @@ Web Dashboard (visualization & verify)
 ## 🔑 Workflow Example
 
 1. **Hệ thống IoT chạy** → Lưu dữ liệu vào `garden.db`
-2. **Scheduler tự động gọi** (mỗi 1 giờ):
+2. **Ghi Lên Blockchain**:
    - Đọc data từ DB
    - Hash bằng SHA256
    - Ghi lên blockchain
@@ -221,12 +210,5 @@ Web Dashboard (visualization & verify)
 <p align="center">
   <img src="Poster.png" alt="System Architecture" width="800"/>
 </p>
-
-## 👨‍💻 Developer Info
-
-- **Solidity Version:** ^0.8.0
-- **Python:** 3.8+
-- **Web3.py:** >=7.0.0
-- **Framework:** Flask 3.0.0
 
 ---
