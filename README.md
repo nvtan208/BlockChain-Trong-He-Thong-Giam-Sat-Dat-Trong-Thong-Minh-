@@ -1,10 +1,21 @@
-# 🌱 SmartGarden Blockchain
+<div align="center">
+<h1 align="center">🌱 SmartGarden Blockchain</h1>
+
 
 **Hệ thống giám sát đất trồng thông minh với Blockchain + AI**
 
 Tích hợp IoT data từ `garden.db` lên Ethereum Blockchain (Ganache) để đảm bảo tính toàn vẹn dữ liệu, có thể xác minh rằng dữ liệu không bị sửa đổi.
+<p align="center">
+  <img src="logo.png" alt="DaiNam University Logo" width="200"/>
+  <img src="AIoTLab_logo.png" alt="AIoTLab Logo" width="170"/>
+</p>
 
+[![Made by AIoTLab](https://img.shields.io/badge/Made%20by%20AIoTLab-blue?style=for-the-badge)](https://www.facebook.com/DNUAIoTLab)
+[![Fit DNU](https://img.shields.io/badge/Fit%20DNU-green?style=for-the-badge)](https://fitdnu.net/)
+[![DaiNam University](https://img.shields.io/badge/DaiNam%20University-red?style=for-the-badge)](https://dainam.edu.vn)
 ---
+
+</div>
 
 ## 🎯 Tính Năng
 
