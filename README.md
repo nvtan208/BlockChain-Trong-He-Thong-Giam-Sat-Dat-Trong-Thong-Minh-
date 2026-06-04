@@ -172,57 +172,6 @@ WHERE ts >= datetime('now', '-1 hour')
 - **Port:** `5001`
 - **Debug:** `True`
 
-### Scheduler
-
-Tự động ghi blockchain mỗi **3600 giây (1 giờ)** — có thể chỉnh trong `app.py`:
-
-```python
-time.sleep(3600)  # Đổi thành giá trị khác (giây)
-```
-
----
-
-## 🐛 Troubleshooting
-
-### ❌ "Cannot connect to Ganache"
-
-```bash
-# Kiểm tra Ganache chạy trên port 8545
-http://127.0.0.1:8545
-
-# Nếu Ganache không chạy, khởi động:
-ganache --port 8545
-```
-
-### ❌ "garden.db not found"
-
-Đường dẫn: `../smartgarden/garden.db`
-
-Nếu cấu trúc thư mục khác, sửa trong `app.py`:
-
-```python
-DB_PATH = "/path/to/garden.db"
-```
-
-### ❌ "Solidity compile error"
-
-```bash
-# Xóa cache compiler
-rm -rf ~/.solcx
-
-# Chạy lại deploy
-python deploy.py
-```
-
-### ❌ "Port 5001 already in use"
-
-Sửa cổng trong `app.py`:
-
-```python
-app.run(port=5002)  # Hoặc port khác
-```
-
----
 
 ## 📊 Data Flow
 
@@ -257,11 +206,10 @@ Web Dashboard (visualization & verify)
 
 ---
 
-## 📝 License
-
-MIT
-
----
+## 📰 Poster
+<p align="center">
+  <img src="Poster.png" alt="System Architecture" width="800"/>
+</p>
 
 ## 👨‍💻 Developer Info
 
@@ -271,5 +219,3 @@ MIT
 - **Framework:** Flask 3.0.0
 
 ---
-
-**Hỗ trợ:** Xem `SETUP.md` để hướng dẫn chi tiết.
